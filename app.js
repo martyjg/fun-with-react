@@ -2,14 +2,16 @@ var contacts = [
     {key: 1, name: "James K Nelson", email: "james@jamesknelson.com", description: "Front-end Unicorn"},
     {key: 2, name: "Jim", email: "jim@example.com"},
     {key: 3, name: "Joe"},
-    {key: 4, name: "Marty Gormley", email: "marty@marty.com", description: "LOLOLOLOLOL Dev"}
-]
+    {key: 4, name: "Marty Gormley", email: "marty@marty.com", description: "lolololololol"}
+];
+
+var newContact = {name: "", email: "", description: ""};
 
 var ContactItem  = React.createClass( {
   propTypes: {
     name: React.PropTypes.string.isRequired,
     email: React.PropTypes.string.isRequired,
-    description: React.PropTypes.string.isRequired
+    description: React.PropTypes.string
   },
 
   render: function() {
@@ -23,9 +25,26 @@ var ContactItem  = React.createClass( {
   },
 });
 
+var ContactForm = React.createClass( {
+  proptypes: {
+    contact: React.PropTypes.object.isRequired
+  },
+
+  render: function() {
+    return (
+    React.createElement("form", {},
+      React.createElement("input", {type: "text", placeholder: "Name (required)", value: this.props.contact.name}),
+      React.createElement("input", {type: "text", placeholder: "Email (required)", value: this.props.contact.email}),
+      React.createElement("textarea", {placeholder: "Description", value: this.props.contact.description}),
+      React.createElement("button", {type: "submit"}, "Add Contact")
+      )
+    )
+  }
+});
+
 var listElements = contacts
 .filter(function(contact) { return contact.email })
-.map(function(contact) { return React.createElement(ContactItem, contact) })
+.map(function(contact) { return React.createElement(ContactItem, contact) });
 
 var rootElement = 
 React.createElement("div", {},
@@ -39,7 +58,10 @@ React.createElement("div", {},
     //   React.createElement("h2", {}, "Nota Reelperson"),
     //   React.createElement("a", {href: "mailto:blah@blah.com"}, "blah@blah.com")
     //   )
-    )
+    ),
+  React.createElement("h1", {}, "Contact Form"),
+  React.createElement(ContactForm, {contact: newContact})
 );
 
-ReactDOM.render(rootElement, document.getElementById("react-app"))
+ReactDOM.render(rootElement, document.getElementById("react-app"));
+// ReactDOM.render(ContactForm, document.getElementById("react-app"));
