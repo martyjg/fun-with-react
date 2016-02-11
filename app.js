@@ -42,26 +42,57 @@ var ContactForm = React.createClass( {
   }
 });
 
-var listElements = contacts
-.filter(function(contact) { return contact.email })
-.map(function(contact) { return React.createElement(ContactItem, contact) });
+var ContactView = React.createClass({
+  propTypes: {
+    contacts: React.PropTypes.array.isRequired,
+    newContact: React.PropTypes.object.isRequired,
+  },
 
-var rootElement = 
-React.createElement("div", {},
-  React.createElement("h1", {}, "Contacts"),
-  React.createElement("ul", {}, listElements
-    // React.createElement(ContactItem
-    //   // React.createElement("h2", {}, "Marty Gormley"),
-    //   // React.createElement("a", {href: "mailto:marty@martygormley.com"}, "marty@martygormley.com")
-    //   )
-    // React.createElement("li", {},
-    //   React.createElement("h2", {}, "Nota Reelperson"),
-    //   React.createElement("a", {href: "mailto:blah@blah.com"}, "blah@blah.com")
-    //   )
-    ),
-  React.createElement("h1", {}, "Contact Form"),
-  React.createElement(ContactForm, {contact: newContact})
-);
+  render: function() {
+    console.log(this);
+    var contactItemElements = this.props.contacts
+      .filter(function(contact) { return contact.email })
+      .map(function(contact) { return React.createElement(ContactItem, contact) })
 
-ReactDOM.render(rootElement, document.getElementById("react-app"));
+    return (
+      React.createElement('div', {className: 'ContactView'},
+        React.createElement('h1', {className: 'ContactView-title'}, "Contacts"),
+        React.createElement('ul', {className: 'ContactView-list'}, contactItemElements),
+        React.createElement("h1", {className: "Form-title"}, "Add New Contact"),
+        React.createElement(ContactForm, {contact: this.props.newContact})
+      )
+    )
+  }
+})
+
+// var listElements = contacts
+// .filter(function(contact) { return contact.email })
+// .map(function(contact) { return React.createElement(ContactItem, contact) });
+
+// var rootElement = 
+// React.createElement("div", {},
+//   React.createElement("h1", {}, "Contacts"),
+//   React.createElement("ul", {}, listElements
+//     // React.createElement(ContactItem
+//     //   // React.createElement("h2", {}, "Marty Gormley"),
+//     //   // React.createElement("a", {href: "mailto:marty@martygormley.com"}, "marty@martygormley.com")
+//     //   )
+//     // React.createElement("li", {},
+//     //   React.createElement("h2", {}, "Nota Reelperson"),
+//     //   React.createElement("a", {href: "mailto:blah@blah.com"}, "blah@blah.com")
+//     //   )
+//     ),
+//   React.createElement("h1", {}, "Contact Form"),
+//   React.createElement(ContactForm, {contact: newContact})
+// );
+
+// ReactDOM.render(rootElement, document.getElementById("react-app"));
 // ReactDOM.render(ContactForm, document.getElementById("react-app"));
+
+ReactDOM.render(
+  React.createElement(ContactView, {
+    contacts: contacts,
+    newContact: newContact
+  }),
+  document.getElementById('react-app')
+)
